@@ -4,34 +4,37 @@ function getRandomHexColor() {
   return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 }
 
-// Оголошуємо змінні для доступу до кнопок та тіла документа
+// Оголошуємо змінні для доступу до кнопок та сторінки
 const startBtn = document.querySelector('[data-start]');
 const stopBtn = document.querySelector('[data-stop]');
 const body = document.querySelector('body');
-let timeId = null;
-// const randomColor = getRandomHexColor();
 
+// Змінна індетифікатора для зупинки
+let timeId = null;
 
   // Додаємо слухачі на кнопки старт та стоп
-startBtn.addEventListener('click', changeBgColor);
+startBtn.addEventListener('click', onClickStartBtn);
 stopBtn.addEventListener('click', onClickStoptBtn);
 
-// Виконання функції при натисканні кнопок старт та стоп
-// function changeColor() {
+// Створюємо функцію для зміни кольору фона та заданомо стан для кнопки старт після натискання
+// function changeBgColor() {
 //   body.style.backgroundColor = getRandomHexColor();
 // }
 
-// Створюємо функцію для зміни кольору фона 
-function changeBgColor() {
-  // changeColor();
+// Зміна кольору фона при натисканні start
+function onClickStartBtn() {
+  // changeBgColor();
+  startBtn.setAttribute('disabled', '');
+  stopBtn.removeAttribute('disabled', '');
   timeId = setInterval(() => {
     body.style.backgroundColor = getRandomHexColor();
   }, 1000);
 }
 
-// const timeId = setInterval(changeBgColor, 1000);
-
+// Зупинка зміни кольору при натисканні stop
 function onClickStoptBtn() {
   clearInterval(timeId);
+  stopBtn.setAttribute('disabled', '');
+  startBtn.removeAttribute('disabled', '');
 };
 
