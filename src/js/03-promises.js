@@ -1,15 +1,42 @@
 import Notiflix from 'notiflix';
 import 'notiflix/dist/notiflix-3.2.6.min.css';
 
-const form = document.querySelector('.form');
-const createPromiseBtn = form.querySelector('button');
+const refs = {
+form: document.querySelector('.form'),
+delayFirst: document.querySelector('[name="delay"]'),
+delayStep: document.querySelector('[name="step"]'),
+amountEl: document.querySelector('[name="amount"]'),
+}
 
-createPromiseBtn.addEventListener('click', onClickCreateBtn);
+// Deligation
+refs.form.addEventListener('submit', onClickCreateBtn);
+
+function onClickCreateBtn(e) {
+  e.preventDefault();
+  let delay = Number(refs.delayFirst.value);
+  const step = Number(refs.delayStep.value);
+  const amount = Number(refs.amountEl.value);
+  for (let i = 1; i <= amount; i++) {
+    createPromise(i, delay)
+      .then(({ position, delay }) => {
+        Notiflix.Notify.success(
+          `✅ Fulfilled promise ${position} in ${delay}ms`
+        );
+      })
+      .catch(({ position, delay }) => {
+        Notiflix.Notify.failure(
+          `❌ Rejected promise ${position} in ${delay}ms`
+        );
+      });
+    delay += step;
+  }
+}
 
 function createPromise(position, delay) {
-  const shouldResolve = Math.random() > 0.3;
+  
   return new Promise((resolve, reject) => {
     setTimeout(() => {
+      const shouldResolve = Math.random() > 0.3;
       if (shouldResolve) {
         resolve({ position, delay });
       } else {
@@ -18,22 +45,3 @@ function createPromise(position, delay) {
     }, delay);
   });  
 }
-
-function onClickCreateBtn() {
-  let delay = form.elements.delay.value;
-  const step = form.elements.step.value;
-  const amount = form.elements.amount.value;
-  for (let i = 1; i <= amount; i++) {
-    createPromise(i, delay)
-  .then(({ position, delay }) => {
-    Notiflix.Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
-  })
-  .catch(({ position, delay }) => {
-    Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
-  });
-    delay += step;
-  }
-}
-
-
-
