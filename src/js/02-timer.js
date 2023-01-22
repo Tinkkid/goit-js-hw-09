@@ -5,6 +5,7 @@ import Notiflix from 'notiflix';
 import 'notiflix/dist/notiflix-3.2.6.min.css';
 
 const refs = {
+input: document.querySelector('input'),
 startBtn: document.querySelector('[data-start]'),
 daysEl: document.querySelector('[data-days]'),
 hoursEl: document.querySelector('[data-hours]'),
@@ -13,21 +14,22 @@ secondsEl: document.querySelector('[data-seconds]'),
 }
 
 refs.startBtn.disabled = true;
-let deadline = null;
+let selectTime = null;
 
 // custom flatpickr object settings
 const options = {
-  enableTime: true,
+   enableTime: true,
+  
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-   //  deadline = selectedDates[0].getTime();
+
     if (selectedDates[0] <= options.defaultDate) {
       return Notiflix.Notify.failure('Please choose a date in the future');
     } else {
       refs.startBtn.disabled = false;
-      deadline = selectedDates[0];
+      selectTime = selectedDates[0];
     }
   },
 };
@@ -38,14 +40,15 @@ refs.startBtn.addEventListener('click', onStBntTimerStart);
 
 
 function onStBntTimerStart() {
-  refs.startBtn.disabled = true;
+   refs.startBtn.disabled = true;
 
   const timerId = setInterval(() => {
-    let diff = deadline - Date.now();
+    let diff = selectTime - Date.now();
     if (diff <= 0) {
       clearInterval(timerId);
       return;
     }
+     
     //  Add contents to our countdown
     const { days, hours, minutes, seconds } = convertMs(diff);
     refs.daysEl.textContent = addingZero(days);
@@ -79,3 +82,4 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds };
 }
+
