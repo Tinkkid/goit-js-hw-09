@@ -11,11 +11,11 @@ function createPromise(position, delay) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (shouldResolve) {
-        resolve ({ position, delay })
+        resolve({ position, delay });
       } else {
-        reject ({ position, delay })
+        reject({ position, delay });
       }
-    }, delay)
+    }, delay);
   });  
 }
 
@@ -23,7 +23,6 @@ function onClickCreateBtn() {
   let delay = form.elements.delay.value;
   const step = form.elements.step.value;
   const amount = form.elements.amount.value;
-  console.log(delay);
   for (let i = 1; i <= amount; i++) {
     createPromise(i, delay)
   .then(({ position, delay }) => {
