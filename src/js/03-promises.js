@@ -30,6 +30,7 @@ function onClickCreateBtn(e) {
       });
     delay += step;
   }
+  refs.form.reset();
 }
 
 function createPromise(position, delay) {
